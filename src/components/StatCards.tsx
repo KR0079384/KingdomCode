@@ -30,18 +30,20 @@ export function StatCards() {
   );
 }
 
-function StatCard({
+export function StatCard({
   label,
   value,
   icon: Icon,
   tint,
-  delay,
+  delay = 0,
+  description = "across the kingdom",
 }: {
   label: string;
   value: number;
   icon: React.ComponentType<{ className?: string }>;
   tint: string;
-  delay: number;
+  delay?: number;
+  description?: string;
 }) {
   const count = useCountUp(value);
   return (
@@ -59,7 +61,7 @@ function StatCard({
         </span>
       </div>
       <motion.div className="mt-3 font-display text-3xl text-gradient-gold">{count}</motion.div>
-      <div className="mt-1 text-[11px] text-muted-foreground">across the kingdom</div>
+      <div className="mt-1 text-[11px] text-muted-foreground">{description}</div>
     </motion.div>
   );
 }

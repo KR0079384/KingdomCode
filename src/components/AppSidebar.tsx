@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
+  Award,
   Network,
   Users,
   Clock,
@@ -24,6 +25,7 @@ import { cn } from "@/lib/utils";
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/graph", label: "Kingdom Graph", icon: Network },
+  { to: "/leaderboard", label: "Leaderboard", icon: Award },
   { to: "/contributors", label: "Contributors", icon: Users },
   { to: "/timeline", label: "Timeline", icon: Clock },
   { to: "/hall-of-fame", label: "Hall of Fame", icon: Crown },

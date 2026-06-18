@@ -149,3 +149,20 @@ export const timeline: TimelineEvent[] = [
 export function getContributor(username: string): Contributor | undefined {
   return contributors.find((c) => c.username === username);
 }
+
+export interface RankedContributor extends Contributor {
+  score: number;
+}
+
+export function getContributorScore(contributor: Contributor) {
+  return contributor.contributions * 100 + contributor.questWins * 250;
+}
+
+export function getLeaderboard(contributorsList: Contributor[]): RankedContributor[] {
+  return contributorsList
+    .map((contributor) => ({
+      ...contributor,
+      score: getContributorScore(contributor),
+    }))
+    .sort((a, b) => b.score - a.score);
+}
