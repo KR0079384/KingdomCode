@@ -7,6 +7,7 @@ import TimelinePage from "@/pages/Timeline";
 import HallOfFamePage from "@/pages/HallOfFame";
 import SettingsPage from "@/pages/Settings";
 import GraphPage from "@/pages/Graph";
+import LeaderboardPage from "@/pages/Leaderboard";
 import './styles.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/graph" element={<GraphPage />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/contributors" element={<ContributorsPage />} />
               <Route path="/timeline" element={<TimelinePage />} />
               <Route path="/hall-of-fame" element={<HallOfFamePage />} />
