@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { Code as Github, Trophy } from "lucide-react";
-import { contributors, entities } from "@/lib/kingdom-data";
+import { useContributors } from "@/lib/api/hooks";
 
 export default function ContributorsPage() {
+  const { data: contributors, loading, error } = useContributors();
+  const sortedContributors = (contributors ?? []).slice().sort((a, b) => b.points - a.points);
+
   return (
     <div className="flex flex-col gap-6">
       <header>
@@ -13,15 +16,38 @@ export default function ContributorsPage() {
           Contributors
         </h1>
       </header>
+
+      {error ? (
+        <div className="glass rounded-3xl border border-glass-border p-6 text-sm text-amber-foreground">
+          <div className="font-medium">{error}</div>
+          <p className="mt-2 text-muted-foreground">Unable to load contributors from the backend.</p>
+        </div>
+      ) : null}
+
+      {loading ? (
+        <div className="glass rounded-3xl border border-glass-border p-6 text-center text-muted-foreground">
+          Loading contributors...
+        </div>
+      ) : null}
+
+      {!loading && sortedContributors.length === 0 ? (
+        <div className="glass rounded-3xl border border-glass-border p-6 text-sm text-muted-foreground">
+          No contributors found.
+        </div>
+      ) : null}
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {contributors.map((c, i) => {
-          const built = entities.filter(
-            (e) => e.contributorId === c.username,
-          ).length;
+        {sortedContributors.map((contributor, i) => {
+          const githubUrl = `https://github.com/${contributor.username}`;
+          const avatarUrl = `https://github.com/${contributor.username}.png`;
+          const recentContributions = [...contributor.contributions]
+            .sort((a, b) => new Date(b.merged_at).getTime() - new Date(a.merged_at).getTime())
+            .slice(0, 3);
+
           return (
             <motion.a
-              key={c.username}
-              href={c.github}
+              key={contributor.username}
+              href={githubUrl}
               target="_blank"
               rel="noreferrer"
               initial={{ opacity: 0, y: 12 }}
@@ -33,30 +59,50 @@ export default function ContributorsPage() {
               <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-gradient-to-br from-primary/20 to-accent/10 blur-2xl" />
               <div className="flex items-center gap-4">
                 <img
-                  src={c.avatar}
-                  alt={c.username}
+                  src={avatarUrl}
+                  alt={contributor.username}
                   className="h-14 w-14 rounded-2xl ring-1 ring-glass-border"
                 />
                 <div className="min-w-0">
-                  <div className="truncate font-display text-lg">
-                    {c.username}
-                  </div>
+                  <div className="truncate font-display text-lg">{contributor.username}</div>
                   <div className="text-[10px] uppercase tracking-wider text-primary">
-                    {c.rank}
+                    Contributor
                   </div>
                 </div>
               </div>
+
               <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-                <Stat label="Entities" value={built} />
-                <Stat label="Contribs" value={c.contributions} />
-                <Stat label="Quests" value={c.questWins} />
+                <Stat label="Points" value={contributor.points} />
+                <Stat label="Merged PRs" value={contributor.merged_prs} />
+                <Stat label="Contribs" value={contributor.contributions.length} />
               </div>
+
+              <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+                <div className="font-medium text-foreground">Recent Contributions</div>
+                <div className="space-y-1">
+                  {recentContributions.length > 0 ? (
+                    recentContributions.map((contribution) => (
+                      <div key={contribution.pr_number} className="rounded-2xl border border-glass-border bg-background/30 p-3">
+                        <div className="font-medium text-foreground">{contribution.title}</div>
+                        <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                          PR #{contribution.pr_number} · {new Date(contribution.merged_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="rounded-2xl border border-glass-border bg-background/30 p-3 text-muted-foreground">
+                      No recent contributions
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                 <span className="flex items-center gap-1">
-                  <Trophy className="h-3 w-3 text-primary" /> Rank: {c.rank}
+                  <Trophy className="h-3 w-3 text-primary" /> Points: {contributor.points}
                 </span>
                 <span className="flex items-center gap-1 group-hover:text-foreground">
-                  <Github className="h-3 w-3" /> Profile
+                  <Github className="h-3 w-3" /> View GitHub
                 </span>
               </div>
             </motion.a>
@@ -77,3 +123,5 @@ function Stat({ label, value }: { label: string; value: number }) {
     </div>
   );
 }
+
+
