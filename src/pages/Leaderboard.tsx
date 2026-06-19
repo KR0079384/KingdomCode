@@ -108,7 +108,7 @@ function LeaderboardPodiumCard({
 }
 
 export default function LeaderboardPage() {
-  const { data: leaderboardData, loading, error } = useLeaderboard();
+  const { data: leaderboardData, loading } = useLeaderboard();
   const leaderboard = (leaderboardData ?? getLeaderboard(contributors).map((contributor) => ({
     username: contributor.username,
     merged_prs: contributor.contributions,
