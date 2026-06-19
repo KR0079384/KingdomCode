@@ -89,17 +89,17 @@ function LeaderboardPodiumCard({
           Score {contributor.score}
         </span>
       </div>
-      <div className="mt-5 grid grid-cols-3 gap-3 text-sm text-muted-foreground">
-        <div className="rounded-2xl border border-glass-border bg-background/30 p-3">
-          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Contributions</div>
+      <div className="mt-5 grid min-w-0 grid-cols-3 gap-3 text-sm text-muted-foreground">
+        <div className="min-w-0 rounded-2xl border border-glass-border bg-background/30 p-3">
+          <div className="break-words text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Contributions</div>
           <div className="mt-2 font-medium text-foreground">{contributor.contributions}</div>
         </div>
-        <div className="rounded-2xl border border-glass-border bg-background/30 p-3">
-          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Quest Wins</div>
+        <div className="min-w-0 rounded-2xl border border-glass-border bg-background/30 p-3">
+          <div className="break-words text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Quest Wins</div>
           <div className="mt-2 font-medium text-foreground">{contributor.questWins}</div>
         </div>
-        <div className="rounded-2xl border border-glass-border bg-background/30 p-3">
-          <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Rank</div>
+        <div className="min-w-0 rounded-2xl border border-glass-border bg-background/30 p-3">
+          <div className="break-words text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Rank</div>
           <div className="mt-2 font-medium text-foreground">{contributor.rank}</div>
         </div>
       </div>
