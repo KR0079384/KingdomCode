@@ -3,6 +3,7 @@ import { Award, ArrowUpRight, Users, Sparkles } from "lucide-react";
 import { StatCard } from "@/components/StatCards";
 import { cn } from "@/lib/utils";
 import { getContributorScore, getLeaderboard, timeline, contributors } from "@/lib/kingdom-data";
+import { useLeaderboard } from "@/lib/api/hooks";
 
 const rankBadgeStyles: Record<string, string> = {
   "Royal Council": "bg-amber/20 text-amber border border-amber/30",
@@ -107,7 +108,28 @@ function LeaderboardPodiumCard({
 }
 
 export default function LeaderboardPage() {
-  const leaderboard = getLeaderboard(contributors);
+  const { data: leaderboardData, loading, error } = useLeaderboard();
+  const leaderboard = (leaderboardData ?? getLeaderboard(contributors).map((contributor) => ({
+    username: contributor.username,
+    merged_prs: contributor.contributions,
+    points: contributor.score,
+  })))
+    .slice()
+    .sort((a, b) => b.points - a.points)
+    .map((entry) => {
+      const local = contributors.find((contributor) => contributor.username === entry.username);
+      return {
+        username: entry.username,
+        merged_prs: entry.merged_prs,
+        points: entry.points,
+        avatar: local?.avatar ?? `https://github.com/${entry.username}.png`,
+        github: local?.github ?? `https://github.com/${entry.username}`,
+        rank: local?.rank ?? "Settler",
+        contributions: entry.merged_prs,
+        questWins: local?.questWins ?? 0,
+        score: entry.points,
+      };
+    });
   const podium = leaderboard.slice(0, 3);
 
   return (
@@ -155,13 +177,19 @@ export default function LeaderboardPage() {
             <Award className="h-6 w-6 text-primary" />
           </div>
           <div className="mt-6 grid gap-4 lg:grid-cols-3">
-            {podium.map((contributor, index) => (
-              <LeaderboardPodiumCard
-                key={contributor.username}
-                contributor={contributor}
-                position={index + 1}
-              />
-            ))}
+            {loading ? (
+              <div className="col-span-full rounded-3xl border border-glass-border bg-background/30 p-6 text-center text-muted-foreground">
+                Loading leaderboard...
+              </div>
+            ) : (
+              podium.map((contributor, index) => (
+                <LeaderboardPodiumCard
+                  key={contributor.username}
+                  contributor={contributor}
+                  position={index + 1}
+                />
+              ))
+            )}
           </div>
         </div>
 
