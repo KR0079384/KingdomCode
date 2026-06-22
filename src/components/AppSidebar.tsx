@@ -129,7 +129,7 @@ export function AppSidebar() {
 
       {/* Footer: profile + theme */}
       <div className="space-y-2 p-3 border-t border-glass-border">
-        <div className="relative">
+        {/* <div className="relative">
           <button
             onClick={() => setProfileOpen((v) => !v)}
             className="flex w-full items-center gap-3 rounded-xl border border-glass-border bg-secondary/40 p-2 text-left transition hover:bg-secondary"
@@ -179,7 +179,7 @@ export function AppSidebar() {
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </div> */}
 
         <button
           onClick={uiActions.toggleTheme}
