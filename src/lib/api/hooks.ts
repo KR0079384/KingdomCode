@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getContributorScore, getLeaderboard as getLocalLeaderboard } from "@/lib/kingdom-data";
+import { getLeaderboard as getLocalLeaderboard } from "@/lib/kingdom-data";
 import { contributors as localContributors } from "@/lib/kingdom-data";
 import type { Contributor, Entity, LeaderboardEntry } from "./types";
 import { getContributors as fetchContributors, getEntities as fetchEntities, getLeaderboard as fetchLeaderboard } from "./client";

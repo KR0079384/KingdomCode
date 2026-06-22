@@ -36,7 +36,7 @@ interface TimelineEvent {
 export default function TimelinePage() {
   const { data: contributors, loading, error } = useContributors();
 
-  const timelineEvents = useMemo(() => {
+  const timelineEvents = useMemo<TimelineEvent[]>(() => {
     if (!contributors) return [];
 
     return contributors

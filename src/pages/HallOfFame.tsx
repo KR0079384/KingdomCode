@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+
 import { Award, ArrowUpRight, Crown, Users } from "lucide-react";
 import { useContributors } from "@/lib/api/hooks";
 

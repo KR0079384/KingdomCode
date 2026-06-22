@@ -12,14 +12,9 @@ import {
   ChevronsRight,
   Sun,
   Moon,
-  LogOut,
-  User as UserIcon,
-  Bookmark,
-  GitPullRequest,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { uiActions, useUI } from "@/lib/kingdom-store";
-import { contributors } from "@/lib/kingdom-data";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -37,8 +32,8 @@ export function AppSidebar() {
   const theme = useUI((s) => s.theme);
   const location = useLocation();
   const pathname = location.pathname;
-  const [profileOpen, setProfileOpen] = useState(false);
-  const me = contributors[0];
+  // const [profileOpen, setProfileOpen] = useState(false);
+  // const me = contributors[0];
 
   useEffect(() => {
     const root = document.documentElement;
